@@ -39,9 +39,61 @@ h1 {
   padding: 8px 12px;
   border-radius: 18px;
   max-width: 75%;
-  line-height: 1.4;
+  line-height: 1.5;
   color: #111827;
   word-wrap: break-word;
+}
+
+.message p,
+.message ul,
+.message pre,
+.message h1,
+.message h2,
+.message h3 {
+  margin: 0 0 8px;
+}
+
+.message p:last-child,
+.message ul:last-child,
+.message pre:last-child,
+.message h1:last-child,
+.message h2:last-child,
+.message h3:last-child {
+  margin-bottom: 0;
+}
+
+.message ul {
+  padding-left: 20px;
+}
+
+.message li {
+  margin-bottom: 4px;
+}
+
+.message code {
+  background: #e5e7eb;
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-family: Consolas, Monaco, monospace;
+  font-size: 0.95em;
+}
+
+.message pre {
+  background: #0f172a;
+  color: #e5e7eb;
+  border-radius: 8px;
+  overflow-x: auto;
+  padding: 10px;
+}
+
+.message pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+.message a {
+  color: #2563eb;
 }
 
 .user-message {

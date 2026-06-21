@@ -8,10 +8,106 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const conversation = [];
 
+  function escapeHtml(text) {
+    return text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function renderInlineMarkdown(text) {
+    return escapeHtml(text)
+      .replace(/`([^`]+)`/g, "<code>$1</code>")
+      .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+      .replace(/\*([^*]+)\*/g, "<em>$1</em>")
+      .replace(/\[([^\]]+)]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+  }
+
+  function renderMarkdown(text) {
+    const lines = text.split("\n");
+    const html = [];
+    let inCodeBlock = false;
+    let codeLines = [];
+    let inList = false;
+
+    function closeList() {
+      if (inList) {
+        html.push("</ul>");
+        inList = false;
+      }
+    }
+
+    function closeCodeBlock() {
+      html.push(`<pre><code>${escapeHtml(codeLines.join("\n"))}</code></pre>`);
+      codeLines = [];
+      inCodeBlock = false;
+    }
+
+    lines.forEach((line) => {
+      if (line.trim().startsWith("```")) {
+        if (inCodeBlock) {
+          closeCodeBlock();
+        } else {
+          closeList();
+          inCodeBlock = true;
+        }
+        return;
+      }
+
+      if (inCodeBlock) {
+        codeLines.push(line);
+        return;
+      }
+
+      const trimmedLine = line.trim();
+
+      if (!trimmedLine) {
+        closeList();
+        return;
+      }
+
+      const headingMatch = trimmedLine.match(/^(#{1,3})\s+(.+)$/);
+      if (headingMatch) {
+        closeList();
+        const level = headingMatch[1].length;
+        html.push(`<h${level}>${renderInlineMarkdown(headingMatch[2])}</h${level}>`);
+        return;
+      }
+
+      const listMatch = trimmedLine.match(/^[-*]\s+(.+)$/);
+      if (listMatch) {
+        if (!inList) {
+          html.push("<ul>");
+          inList = true;
+        }
+        html.push(`<li>${renderInlineMarkdown(listMatch[1])}</li>`);
+        return;
+      }
+
+      closeList();
+      html.push(`<p>${renderInlineMarkdown(trimmedLine)}</p>`);
+    });
+
+    if (inCodeBlock) {
+      closeCodeBlock();
+    }
+
+    closeList();
+
+    return html.join("");
+  }
+
   function addMessage(role, text) {
     const message = document.createElement("div");
     message.classList.add("message", role === "user" ? "user-message" : "bot-message");
-    message.textContent = text;
+
+    if (role === "user") {
+      message.textContent = text;
+    } else {
+      message.innerHTML = renderMarkdown(text);
+    }
 
     chatBox.appendChild(message);
     chatBox.scrollTop = chatBox.scrollHeight;
@@ -63,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const botReply = data.result.trim();
 
-      thinkingMessage.textContent = botReply;
+      thinkingMessage.innerHTML = renderMarkdown(botReply);
 
       conversation.push({
         role: "model",
