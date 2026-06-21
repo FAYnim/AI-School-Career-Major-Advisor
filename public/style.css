@@ -47,6 +47,63 @@ h1 {
   scroll-behavior: smooth;
 }
 
+.welcome-message {
+  margin: auto;
+  max-width: 520px;
+  padding: 24px 28px;
+  text-align: center;
+  background: #2a2a2a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+}
+
+.welcome-message.hidden {
+  display: none;
+}
+
+.welcome-message h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #f1f1f1;
+}
+
+.welcome-message p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #cfcfcf;
+  margin-bottom: 12px;
+}
+
+.welcome-message .welcome-label {
+  font-size: 13px;
+  color: #8e8e8e;
+  margin-top: 16px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.welcome-message .welcome-suggestions {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.welcome-message .welcome-suggestions li {
+  background: #1f1f1f;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: #d0d0d0;
+  text-align: left;
+}
+
 .chat-box::-webkit-scrollbar {
   width: 8px;
 }

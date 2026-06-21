@@ -5,6 +5,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("user-input");
   const chatBox = document.getElementById("chat-box");
   const submitButton = form.querySelector('button[type="submit"]');
+  const welcomeMessage = document.getElementById("welcome-message");
+
+  function hideWelcome() {
+    if (welcomeMessage && !welcomeMessage.classList.contains("hidden")) {
+      welcomeMessage.classList.add("hidden");
+    }
+  }
 
   const conversation = [];
 
@@ -130,6 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
       text: userMessage,
     });
 
+    hideWelcome();
     addMessage("user", userMessage);
     const thinkingMessage = addMessage("model", "Thinking...");
 
