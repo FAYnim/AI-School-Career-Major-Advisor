@@ -37,20 +37,24 @@ h1 {
 
 .message {
   padding: 8px 12px;
-  border-radius: 20px;
-  max-width: 80%;
-  color: #f8fafc;
+  border-radius: 18px;
+  max-width: 75%;
+  line-height: 1.4;
+  color: #111827;
+  word-wrap: break-word;
 }
 
-.message.user {
-  background-color: #2563eb;
+.user-message {
+  background-color: #dcf8c6;
   align-self: flex-end;
-  text-align: right;
+  border-bottom-right-radius: 4px;
+  text-align: left;
 }
 
-.message.bot {
-  background-color: #166534;
+.bot-message {
+  background-color: #ffffff;
   align-self: flex-start;
+  border-bottom-left-radius: 4px;
   text-align: left;
 }
 
